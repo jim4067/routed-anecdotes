@@ -68,13 +68,14 @@ const CreateNew = (props) => {
 
 
 	const handleSubmit = (e) => {
-		e.preventDefault()
+		e.preventDefault();
+
 		props.addNew({
 			content,
 			author,
 			info,
 			votes: 0
-		})
+		});
 	}
 
 	return (
@@ -93,11 +94,20 @@ const CreateNew = (props) => {
 					url for more info
           <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
 				</div>
-				<button>create</button>
+				<button type='submit' >create</button>
 			</form>
 		</div>
 	)
 
+}
+
+const Notification = ({message}) => {
+
+	return (
+		<div>
+			{message}
+		</div>
+	);
 }
 
 const App = () => {
@@ -121,22 +131,30 @@ const App = () => {
 	const [notification, setNotification] = useState('')
 
 	const addNew = (anecdote) => {
-		anecdote.id = (Math.random() * 10000).toFixed(0)
-		setAnecdotes(anecdotes.concat(anecdote))
+		anecdote.id = (Math.random() * 10000).toFixed(0);
+
+		setAnecdotes(anecdotes.concat(anecdote));
+		setNotification(`a new anecdote ${anecdote.content} has been created!`);
+
+		setTimeout( () => { 
+			setNotification('');
+		}, 5000);
+				
 	}
 
 	const anecdoteById = (id) =>
-		anecdotes.find(a => a.id === id)
+		anecdotes.find(a => a.id === id);
 
 	const vote = (id) => {
-		const anecdote = anecdoteById(id)
+		const anecdote = anecdoteById(id);
 
 		const voted = {
 			...anecdote,
 			votes: anecdote.votes + 1
-		}
+		};
 
-		setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
+		setAnecdotes(anecdotes.map(a => a.id === id ? voted : a));
+
 	}
 
 	const match = useRouteMatch('/anecdote/:id');
@@ -149,6 +167,7 @@ const App = () => {
 		<div>
 			<h1>Software anecdotes</h1>
 			<Menu />
+			<Notification message={notification} />
 
 			<Switch >
 				<Route path='/anecdote/:id' >
