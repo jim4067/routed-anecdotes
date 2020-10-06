@@ -16,8 +16,8 @@ const CreateNew = ({ newAnecdote }) => {
 
         const id = (Math.random() * 10000).toFixed(0);
 
-        const newAnecdote = ({
-            id : id,
+        newAnecdote({
+            id: id,
             content: content.value,
             author: author.value,
             info: info.value,
